@@ -16,7 +16,6 @@ def scrape():
       'Connection': 'keep-alive',
   }
 
-  # 1521072000
   data = [
       ('action', 'wpia_changeDay'),
       ('calendarDirection', 'jump'),
@@ -54,10 +53,10 @@ def scrape():
 
 def send_email(body):
   command = \
-      """curl 172.18.0.1:1235
-    -H "Content-Type: application/json"
-    -d '{"subject": "SF Corp Apartments", "body": "{body}"}'
-  """.format(body=body)
+      """curl 172.18.0.1:1235 \
+    -H "Content-Type: application/json" \
+    -d '{"subject": "SF Corp Apartments", "body": "%s"}'
+  """ % body
   subprocess.call([command], shell=True)
 
 
