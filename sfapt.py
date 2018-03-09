@@ -32,7 +32,7 @@ def scrape():
       ('action', 'wpia_changeDay'),
       ('calendarDirection', 'jump'),
       ('totalCalendars', '5'),
-      ('currentTimestamp', '1531612800'),
+      ('currentTimestamp', '1521072000'),
       ('calendarHistory', '1'),
       ('showLegend', 'no'),
       ('showDropdown', '1'),
@@ -55,6 +55,7 @@ def scrape():
       response = response.text
     else:
       send_email(body="You got blocked m8!")
+      return
 
     soup = BeautifulSoup(response, "html.parser")
     booked = soup.select('li.status-booked')
