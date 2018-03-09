@@ -32,7 +32,7 @@ def scrape():
       ('action', 'wpia_changeDay'),
       ('calendarDirection', 'jump'),
       ('totalCalendars', '5'),
-      ('currentTimestamp', '1521072000'),
+      ('currentTimestamp', '1531612800'),
       ('calendarHistory', '1'),
       ('showLegend', 'no'),
       ('showDropdown', '1'),
@@ -61,7 +61,7 @@ def scrape():
     booked = soup.select('li.status-booked')
 
     if len(booked) > 0:
-      send_email(body='There are some new bookings! \n' + prop)
+      send_email(body='There are some new bookings! ' + prop)
 
 
 def send_email(body):
