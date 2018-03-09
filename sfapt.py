@@ -3,6 +3,16 @@ from bs4 import BeautifulSoup
 import subprocess
 
 
+properties = [
+"https://www.sfcorporaterentals.com/property/the-mission-studio-1508/",
+"https://www.sfcorporaterentals.com/property/alamo-square-studio-550/",
+"https://www.sfcorporaterentals.com/property/petite-mission-18th-street-1031/",
+"https://www.sfcorporaterentals.com/property/bernal-heights-mission-studio-163/",
+"https://www.sfcorporaterentals.com/property/dolores-park-mission-18th-street-1337/",
+"https://www.sfcorporaterentals.com/property/grand-mission-18th-street-690/",
+"https://www.sfcorporaterentals.com/property/the-ritz-studio-1177/"
+]
+
 def scrape():
   headers = {
       'Origin': 'https://www.sfcorporaterentals.com',
@@ -11,11 +21,13 @@ def scrape():
       'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36',
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
       'Accept': '*/*',
-      'Referer': 'https://www.sfcorporaterentals.com/property/the-mission-studio-1508/',
+      'Referer': 'https://www.sfcorporaterentals.com/property/alamo-square-studio-550/',
       'X-Requested-With': 'XMLHttpRequest',
       'Connection': 'keep-alive',
   }
 
+  # test data: 1521072000
+  # real data: 1531612800
   data = [
       ('action', 'wpia_changeDay'),
       ('calendarDirection', 'jump'),
@@ -31,24 +43,24 @@ def scrape():
       ('calendarID', '49'),
   ]
 
-  response = requests.post(
-    'https://www.sfcorporaterentals.com/wp-admin/admin-ajax.php',
-    headers=headers,
-    data=data
-  )
+  for prop in properties:
+    headers['Referer'] = prop
+    response = requests.post(
+      'https://www.sfcorporaterentals.com/wp-admin/admin-ajax.php',
+      headers=headers,
+      data=data
+    )
 
-  if response.status_code == 200:
-    response = response.text
-  else:
-    send_email(body="You got blocked m8!")
+    if response.status_code == 200:
+      response = response.text
+    else:
+      send_email(body="You got blocked m8!")
 
-  soup = BeautifulSoup(response, "html.parser")
+    soup = BeautifulSoup(response, "html.parser")
+    booked = soup.select('li.status-booked')
 
-
-  booked = soup.select('li.status-booked')
-
-  if len(booked):
-    send_email(body='There are some new bookings!')
+    if len(booked) > 0:
+      send_email(body='There are some new bookings! \n' + prop)
 
 
 def send_email(body):
