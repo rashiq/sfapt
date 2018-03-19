@@ -63,6 +63,8 @@ def scrape():
     if len(booked) > 0:
       send_email(body='There are some new bookings! ' + prop)
 
+    print 'scraped ' + prop
+
 
 def send_email(body):
   command = \
