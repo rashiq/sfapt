@@ -26,8 +26,6 @@ def scrape():
       'Connection': 'keep-alive',
   }
 
-  # test data: 1521072000
-  # real data: 1531612800
   data = [
       ('action', 'wpia_changeDay'),
       ('calendarDirection', 'jump'),
